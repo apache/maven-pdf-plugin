@@ -78,7 +78,7 @@ under the License.
 
   <properties>
     <doxiaVersion>1.8</doxiaVersion>
-    <doxiaSitetoolsVersion>1.7.1</doxiaSitetoolsVersion>
+    <doxiaSitetoolsVersion>1.7.5</doxiaSitetoolsVersion>
     <mavenVersion>2.2.1</mavenVersion>
   </properties>
 

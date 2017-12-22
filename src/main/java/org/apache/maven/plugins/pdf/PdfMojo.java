@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.io.input.XmlStreamReader;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
@@ -867,32 +868,32 @@ public class PdfMojo
             return;
         }
 
-        File skinFile;
+        Artifact skinArtifact;
         try
         {
-            skinFile =
+            skinArtifact =
                 siteTool.getSkinArtifactFromRepository( localRepository, project.getRemoteArtifactRepositories(),
-                                                        decorationModel ).getFile();
+                                                        decorationModel );
         }
         catch ( SiteToolException e )
         {
             throw new MojoExecutionException( "SiteToolException: " + e.getMessage(), e );
         }
 
-        if ( skinFile == null )
+        if ( skinArtifact == null )
         {
             return;
         }
 
         if ( getLog().isDebugEnabled() )
         {
-            getLog().debug( "Copy resources from skin artifact: '" + skinFile + "'..." );
+            getLog().debug( "Copy resources from skin artifact: '" + skinArtifact.getId() + "'..." );
         }
 
         try
         {
             final SiteRenderingContext context =
-                siteRenderer.createContextForSkin( skinFile, new HashMap<String, Object>( 2 ), decorationModel,
+                siteRenderer.createContextForSkin( skinArtifact, new HashMap<String, Object>( 2 ), decorationModel,
                                                    project.getName(), locale );
             context.addSiteDirectory( new File( siteDirectory, locale.getLanguage() ) );
 
