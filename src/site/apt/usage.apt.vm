@@ -82,7 +82,7 @@ Using The PDF Plugin
   no <<<cover>>> element is given. The <<<toc>>> generates a Table
   of Contents and specifies the order of files to include in the pdf.
   For a complete description of the file format, see the
-  {{{http://maven.apache.org/doxia/doxia/doxia-core/document.html}Document Model Reference}}.
+  {{{/doxia/doxia/doxia-core/document.html}Document Model Reference}}.
 
   <<Notes>>:
 
@@ -96,7 +96,7 @@ Using The PDF Plugin
 * Internationalization
 
   The PDF plugin is able to generate internationalized pdfs, similar to the
-  {{{http://maven.apache.org/guides/mini/guide-site.html}site creation}}.
+  {{{/guides/mini/guide-site.html}site creation}}.
 
   To enable multiple locales, add a configuration similar to the following to your POM:
 
@@ -149,7 +149,7 @@ Using The PDF Plugin
   located in <<<src/site/resources/>>>.
 
   The format of this file has to be exactly the same as the original
-  {{{http://svn.apache.org/repos/asf/maven/doxia/doxia/trunk/doxia-modules/doxia-module-fo/src/main/resources/fo-styles.xslt}default configuration file}}.
+  {{{https://github.com/apache/maven-doxia/blob/master/doxia-modules/doxia-module-fo/src/main/resources/fo-styles.xslt}default configuration file}}.
   However, you only need to specify the properties that you want to override,
   <e.g.> to change the font size of pre-formatted text, you could use:
 
