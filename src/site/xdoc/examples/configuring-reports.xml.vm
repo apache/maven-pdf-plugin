@@ -38,7 +38,7 @@ under the License.
       <p>
         Since version 1.1, all Maven reports will be included by default in the generated PDF.
         You should configure the &lt;reporting/&gt; section of your POM similar than the
-        <a href="http://maven.apache.org/plugins/maven-site-plugin/examples/configuring-reports.html">site plugin</a>
+        <a href="/plugins/maven-site-plugin/examples/configuring-reports.html">site plugin</a>
       </p>
 
       <p>
@@ -139,10 +139,10 @@ under the License.
 
       <subsection name="Maven Reporting Plugins Issues">
         <p>
-          The Maven Project supports several <a href="http://maven.apache.org/plugins/">reporting plugins</a>.
+          The Maven Project supports several <a href="/plugins/">reporting plugins</a>.
           Unfortunately, some releases reporting plugins have known issues with the PDF plugin, mainly due to
           a wrong use of the
-          <a href="http://maven.apache.org/doxia/doxia/doxia-sink-api/apidocs/org/apache/maven/doxia/sink/Sink.html">Sink object</a>
+          <a href="/doxia/doxia/doxia-sink-api/apidocs/org/apache/maven/doxia/sink/Sink.html">Sink object</a>
           in their implementation.
         </p>
         <p>
@@ -157,7 +157,7 @@ under the License.
           fails with the PDF plugin, you should fill a bug report in our <a href="../issue-tracking.html">issue tracker</a>.
         </p>
 
-        <h5><a href="http://maven.apache.org/plugins/maven-changelog-plugin">maven-changelog-plugin</a></h5>
+        <h5><a href="/plugins/maven-changelog-plugin">maven-changelog-plugin</a></h5>
         <table border="0">
           <tr>
             <th>Reports</th>
@@ -184,7 +184,7 @@ under the License.
           </tr>
         </table>
 
-        <h5><a href="http://maven.apache.org/plugins/maven-changes-plugin">maven-changes-plugin</a></h5>
+        <h5><a href="/plugins/maven-changes-plugin">maven-changes-plugin</a></h5>
         <table border="0">
           <tr>
             <th>Reports</th>
@@ -211,7 +211,7 @@ under the License.
           </tr>
         </table>
 
-        <h5><a href="http://maven.apache.org/plugins/maven-checkstyle-plugin">maven-checkstyle-plugin</a></h5>
+        <h5><a href="/plugins/maven-checkstyle-plugin">maven-checkstyle-plugin</a></h5>
         <p>
           <b>Note</b>: could take a lot of time.
         </p>
@@ -229,7 +229,7 @@ under the License.
           </tr>
         </table>
 
-        <h5><a href="http://maven.apache.org/plugins/maven-dependency-plugin">maven-dependency-plugin</a></h5>
+        <h5><a href="/plugins/maven-dependency-plugin">maven-dependency-plugin</a></h5>
         <table border="0">
           <tr>
             <th>Reports</th>
@@ -244,7 +244,7 @@ under the License.
           </tr>
         </table>
 
-        <h5><a href="http://maven.apache.org/plugins/maven-plugin-plugin">maven-plugin-plugin</a></h5>
+        <h5><a href="/plugins/maven-plugin-plugin">maven-plugin-plugin</a></h5>
         <table border="0">
           <tr>
             <th>Reports</th>
@@ -259,7 +259,7 @@ under the License.
           </tr>
         </table>
 
-        <h5><a href="http://maven.apache.org/plugins/maven-pmd-plugin">maven-pmd-plugin</a></h5>
+        <h5><a href="/plugins/maven-pmd-plugin">maven-pmd-plugin</a></h5>
         <table border="0">
           <tr>
             <th>Reports</th>
@@ -280,7 +280,7 @@ under the License.
           </tr>
         </table>
 
-        <h5><a href="http://maven.apache.org/plugins/maven-project-info-reports-plugin/">maven-project-info-reports-plugin</a></h5>
+        <h5><a href="/plugins/maven-project-info-reports-plugin/">maven-project-info-reports-plugin</a></h5>
         <p>
           <b>Note</b>: dependencies report could take a lot of time.
         </p>
@@ -370,7 +370,7 @@ under the License.
           </tr>
         </table>
 
-        <h5><a href="http://maven.apache.org/plugins/maven-surefire-report-plugin">maven-surefire-report-plugin</a></h5>
+        <h5><a href="/plugins/maven-surefire-report-plugin">maven-surefire-report-plugin</a></h5>
         <table border="0">
           <tr>
             <th>Reports</th>
