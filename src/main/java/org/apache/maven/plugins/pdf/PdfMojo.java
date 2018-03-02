@@ -66,6 +66,8 @@ import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.doxia.tools.SiteToolException;
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.ReportPlugin;
+import org.apache.maven.model.Reporting;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -311,10 +313,10 @@ public class PdfMojo
     /**
      * Reports (Maven 3).
      *
-     * @since 1.4
+     * @since 1.5
      */
-    @Parameter( defaultValue = "${project.reporting.plugins}", readonly = true )
-    private org.apache.maven.model.ReportPlugin[] reportingPlugins;
+    @Parameter( defaultValue = "${project.reporting}", readonly = true )
+    private Reporting reporting;
 
     // ----------------------------------------------------------------------
     // Instance fields
@@ -628,7 +630,9 @@ public class PdfMojo
         for ( final Locale locale : getAvailableLocales() )
         {
             String excludes = getDefaultExcludesWithLocales( getAvailableLocales(), getDefaultLocale() );
-            List<String> siteFiles = FileUtils.getFileNames( siteDirectory, "**/*", excludes, false );
+            List<String> siteFiles =
+                siteDirectory.exists() ? FileUtils.getFileNames( siteDirectory, "**/*", excludes, false )
+                                : new ArrayList<String>();
             File siteDirectoryLocale = new File( siteDirectory, locale.getLanguage() );
             if ( !locale.getLanguage().equals( getDefaultLocale().getLanguage() ) && siteDirectoryLocale.exists() )
             {
@@ -1047,29 +1051,32 @@ public class PdfMojo
 
         File generatedReport = new File( outDir, report.getOutputName() + ".xml" );
 
-        String excludes = getDefaultExcludesWithLocales( getAvailableLocales(), getDefaultLocale() );
-        List<String> files =
-            FileUtils.getFileNames( siteDirectory, "*/" + report.getOutputName() + ".*", excludes, false );
-        if ( !locale.getLanguage().equals( defaultLocale.getLanguage() ) )
+        if ( siteDirectory.exists() )
         {
-            files =
-                FileUtils.getFileNames( new File( siteDirectory, locale.getLanguage() ), "*/"
-                    + report.getOutputName() + ".*", excludes, false );
-        }
-
-        if ( files.size() != 0 )
-        {
-            String displayLanguage = locale.getDisplayLanguage( Locale.ENGLISH );
-
-            if ( getLog().isInfoEnabled() )
+            String excludes = getDefaultExcludesWithLocales( getAvailableLocales(), getDefaultLocale() );
+            List<String> files =
+                FileUtils.getFileNames( siteDirectory, "*/" + report.getOutputName() + ".*", excludes, false );
+            if ( !locale.getLanguage().equals( defaultLocale.getLanguage() ) )
             {
-                getLog().info(
-                               "Skipped \"" + report.getName( locale ) + "\" report, file \""
-                                   + report.getOutputName() + "\" already exists for the " + displayLanguage
-                                   + " version." );
+                files =
+                    FileUtils.getFileNames( new File( siteDirectory, locale.getLanguage() ), "*/"
+                        + report.getOutputName() + ".*", excludes, false );
             }
-
-            return;
+    
+            if ( files.size() != 0 )
+            {
+                String displayLanguage = locale.getDisplayLanguage( Locale.ENGLISH );
+    
+                if ( getLog().isInfoEnabled() )
+                {
+                    getLog().info(
+                                   "Skipped \"" + report.getName( locale ) + "\" report, file \""
+                                       + report.getOutputName() + "\" already exists for the " + displayLanguage
+                                       + " version." );
+                }
+    
+                return;
+            }
         }
 
         if ( getLog().isInfoEnabled() )
@@ -1404,7 +1411,7 @@ public class PdfMojo
         mavenReportExecutorRequest.setLocalRepository( localRepository );
         mavenReportExecutorRequest.setMavenSession( session );
         mavenReportExecutorRequest.setProject( project );
-        mavenReportExecutorRequest.setReportPlugins( reportingPlugins );
+        mavenReportExecutorRequest.setReportPlugins( getReportingPlugins() );
 
         MavenReportExecutor mavenReportExecutor;
         try
@@ -1416,6 +1423,38 @@ public class PdfMojo
             throw new MojoExecutionException( "could not get MavenReportExecutor component", e );
         }
         return mavenReportExecutor.buildMavenReports( mavenReportExecutorRequest );
+    }
+
+    /**
+     * Get the report plugins from reporting section, adding if necessary (i.e. not excluded)
+     * default reports (i.e. maven-project-info-reports)
+     *
+     * @return the effective list of reports
+     * @since 1.5
+     */
+    private ReportPlugin[] getReportingPlugins()
+    {
+        List<ReportPlugin> reportingPlugins = reporting.getPlugins();
+
+        // MSITE-806: add default report plugin like done in maven-model-builder DefaultReportingConverter
+        boolean hasMavenProjectInfoReportsPlugin = false;
+        for ( ReportPlugin plugin : reportingPlugins )
+        {
+            if ( "org.apache.maven.plugins".equals( plugin.getGroupId() )
+                && "maven-project-info-reports-plugin".equals( plugin.getArtifactId() ) )
+            {
+                hasMavenProjectInfoReportsPlugin = true;
+                break;
+            }
+        }
+
+        if ( !reporting.isExcludeDefaults() && !hasMavenProjectInfoReportsPlugin )
+        {
+            ReportPlugin mpir = new ReportPlugin();
+            mpir.setArtifactId( "maven-project-info-reports-plugin" );
+            reportingPlugins.add( mpir );
+        }
+        return reportingPlugins.toArray( new ReportPlugin[reportingPlugins.size()] );
     }
 
     /**
