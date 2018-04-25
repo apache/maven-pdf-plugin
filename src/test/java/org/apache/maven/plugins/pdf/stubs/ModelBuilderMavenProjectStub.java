@@ -32,7 +32,6 @@ import org.apache.commons.io.input.XmlStreamReader;
 
 /**
  * @author ltheussl
- * @version $Id$
  */
 public class ModelBuilderMavenProjectStub
     extends MavenProjectStub

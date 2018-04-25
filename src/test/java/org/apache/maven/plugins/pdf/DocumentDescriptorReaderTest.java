@@ -19,7 +19,6 @@ package org.apache.maven.plugins.pdf;
  * under the License.
  */
 
-
 import java.io.File;
 
 import org.apache.maven.doxia.document.DocumentModel;
@@ -30,7 +29,6 @@ import org.codehaus.plexus.PlexusTestCase;
 /**
  *
  * @author ltheussl
- * @version $Id$
  */
 public class DocumentDescriptorReaderTest
         extends PlexusTestCase

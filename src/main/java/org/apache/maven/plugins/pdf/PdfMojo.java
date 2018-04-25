@@ -103,7 +103,6 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * Generates a PDF document for a project documentation usually published as web site (with maven-site-plugin).
  *
  * @author ltheussl
- * @version $Id$
  */
 @Mojo( name = "pdf", threadSafe = true )
 public class PdfMojo
@@ -301,7 +300,7 @@ public class PdfMojo
      */
     @Parameter( property = "validate", defaultValue = "false" )
     private boolean validate;
-    
+
     /**
      * Reports (Maven 2).
      *
@@ -309,7 +308,7 @@ public class PdfMojo
      */
     @Parameter( defaultValue = "${reports}", required = true, readonly = true )
     private MavenReport[] reports;
-    
+
     /**
      * Reports (Maven 3).
      *
@@ -363,7 +362,7 @@ public class PdfMojo
      * @since 1.1
      */
     private Map<Locale, List<MavenReport>> generatedMavenReports;
-    
+
     /**
      * @since 1.3
      */
@@ -399,7 +398,7 @@ public class PdfMojo
             throw new MojoExecutionException( "Error copying generated PDF: " + e.getMessage(), e );
         }
     }
-    
+
     /** {@inheritDoc} */
     public void contextualize( Context context )
         throws ContextException
@@ -519,7 +518,7 @@ public class PdfMojo
             {
                 context.put( (String) entry.getKey(), entry.getValue() );
             }
-            
+
             final DocumentModel model = aggregate ? getDocumentModel( locale ) : null;
 
             try
@@ -1062,11 +1061,11 @@ public class PdfMojo
                     FileUtils.getFileNames( new File( siteDirectory, locale.getLanguage() ), "*/"
                         + report.getOutputName() + ".*", excludes, false );
             }
-    
+
             if ( files.size() != 0 )
             {
                 String displayLanguage = locale.getDisplayLanguage( Locale.ENGLISH );
-    
+
                 if ( getLog().isInfoEnabled() )
                 {
                     getLog().info(
@@ -1074,7 +1073,7 @@ public class PdfMojo
                                        + report.getOutputName() + "\" already exists for the " + displayLanguage
                                        + " version." );
                 }
-    
+
                 return;
             }
         }
@@ -1138,9 +1137,9 @@ public class PdfMojo
             {
                 Thread.currentThread().setContextClassLoader( reportExec.getClassLoader() );
             }
-    
+
             MavenReport report = reportExec.getMavenReport();
-    
+
             /*if ( report instanceof MavenMultiPageReport )
             {
                 // extended multi-page API

@@ -40,7 +40,6 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 /**
  *
  * @author ltheussl
- * @version $Id$
  */
 public class DocumentModelBuilderTest
         extends PlexusTestCase

@@ -48,7 +48,6 @@ import java.util.Locale;
  * Read and filter a DocumentModel from a document descriptor file.
  *
  * @author ltheussl
- * @version $Id$
  */
 public class DocumentDescriptorReader
 {

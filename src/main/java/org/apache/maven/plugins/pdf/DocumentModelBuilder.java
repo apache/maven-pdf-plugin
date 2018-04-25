@@ -43,7 +43,6 @@ import org.apache.commons.io.input.XmlStreamReader;
  * Construct a DocumentModel from a MavenProject and related information.
  *
  * @author ltheussl
- * @version $Id$
  */
 public class DocumentModelBuilder
 {
