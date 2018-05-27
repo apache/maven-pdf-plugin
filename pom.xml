@@ -38,6 +38,12 @@ under the License.
 
   <contributors>
     <contributor>
+      <name>Sébastien Garelle</name>
+      <roles>
+        <role>MPDF-48: run reports with Maven 3</role>
+      </roles>
+    </contributor>
+    <contributor>
       <name>Taciano Tres</name>
       <roles>
         <role>Translator: Portuguese (Brazil)</role>
