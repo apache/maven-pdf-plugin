@@ -44,6 +44,12 @@ under the License.
       </roles>
     </contributor>
     <contributor>
+      <name>Anthony Beurive</name>
+      <roles>
+        <role>MPDF-8: pdf:aggregate to create one PDF for a multi-module project</role>
+      </roles>
+    </contributor>
+    <contributor>
       <name>Taciano Tres</name>
       <roles>
         <role>Translator: Portuguese (Brazil)</role>
@@ -244,6 +250,13 @@ under the License.
           <artifactId>plexus-container-default</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+
+    <!-- JSON -->
+    <dependency>
+      <groupId>org.kopitubruk.util</groupId>
+      <artifactId>JSONUtil</artifactId>
+      <version>1.10.2-java6</version>
     </dependency>
 
     <!-- test dependencies -->

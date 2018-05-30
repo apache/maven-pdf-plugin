@@ -48,6 +48,7 @@ import org.apache.maven.doxia.docrenderer.DocumentRendererException;
 import org.apache.maven.doxia.docrenderer.pdf.PdfRenderer;
 import org.apache.maven.doxia.document.DocumentMeta;
 import org.apache.maven.doxia.document.DocumentModel;
+import org.apache.maven.doxia.document.DocumentTOC;
 import org.apache.maven.doxia.document.DocumentTOCItem;
 import org.apache.maven.doxia.document.io.xpp3.DocumentXpp3Writer;
 import org.apache.maven.doxia.index.IndexEntry;
@@ -68,13 +69,13 @@ import org.apache.maven.doxia.tools.SiteToolException;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.Reporting;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.PluginManager;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectBuilder;
 import org.apache.maven.reporting.AbstractMavenReportRenderer;
@@ -104,9 +105,9 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  *
  * @author ltheussl
  */
-@Mojo( name = "pdf", threadSafe = true )
+@Mojo( name = "pdf", requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true )
 public class PdfMojo
-    extends AbstractMojo implements Contextualizable
+    extends AbstractPdfMojo implements Contextualizable
 {
 
     /**
@@ -187,7 +188,7 @@ public class PdfMojo
      * The Maven Project Object.
      */
     @Parameter( defaultValue = "${project}", readonly = true, required = true )
-    private MavenProject project;
+    protected MavenProject project;
 
     /**
      * The Maven Settings.
@@ -343,13 +344,6 @@ public class PdfMojo
     private DecorationModel defaultDecorationModel;
 
     /**
-     * The temp Site dir to have all site and generated-site files.
-     *
-     * @since 1.1
-     */
-    private File siteDirectoryTmp;
-
-    /**
      * The temp Generated Site dir to have generated reports by this plugin.
      *
      * @since 1.1
@@ -406,6 +400,21 @@ public class PdfMojo
         container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
     }
 
+    protected File getOutputDirectory()
+    {
+        return outputDirectory;
+    }
+
+    protected File getWorkingDirectory()
+    {
+        return workingDirectory;
+    }
+
+    protected boolean isIncludeReports()
+    {
+        return includeReports;
+    }
+
     // ----------------------------------------------------------------------
     // Private methods
     // ----------------------------------------------------------------------
@@ -451,7 +460,8 @@ public class PdfMojo
     private void copyGeneratedPdf()
         throws MojoExecutionException, IOException
     {
-        boolean requireCopy = !outputDirectory.getCanonicalPath().equals( workingDirectory.getCanonicalPath() );
+        boolean requireCopy =
+            !getOutputDirectory().getCanonicalPath().equals( getWorkingDirectory().getCanonicalPath() );
 
         String outputName = getDocumentModel( getDefaultLocale() ).getOutputName().trim();
         if ( !outputName.endsWith( ".pdf" ) )
@@ -461,7 +471,7 @@ public class PdfMojo
 
         for ( final Locale locale : getAvailableLocales() )
         {
-            File generatedPdfSource = new File( getLocaleDirectory( workingDirectory, locale ), outputName );
+            File generatedPdfSource = new File( getLocaleDirectory( getWorkingDirectory(), locale ), outputName );
 
             if ( !generatedPdfSource.exists() )
             {
@@ -469,7 +479,7 @@ public class PdfMojo
                 continue;
             }
 
-            File generatedPdfDest = new File( getLocaleDirectory( outputDirectory, locale ), outputName );
+            File generatedPdfDest = new File( getLocaleDirectory( getOutputDirectory(), locale ), outputName );
 
             if ( requireCopy )
             {
@@ -495,7 +505,7 @@ public class PdfMojo
 
         for ( final Locale locale : getAvailableLocales() )
         {
-            final File workingDir = getLocaleDirectory( workingDirectory, locale );
+            final File workingDir = getLocaleDirectory( getWorkingDirectory(), locale );
 
             File siteDirectoryFile = getLocaleDirectory( getSiteDirectoryTmp(), locale );
 
@@ -536,25 +546,6 @@ public class PdfMojo
     }
 
     /**
-     * @return the default tmpSiteDirectory.
-     * @throws IOException if any
-     * @since 1.1
-     */
-    private File getSiteDirectoryTmp()
-        throws IOException
-    {
-        if ( this.siteDirectoryTmp == null )
-        {
-            final File tmpSiteDir = new File( workingDirectory, "site.tmp" );
-            prepareTempSiteDirectory( tmpSiteDir );
-
-            this.siteDirectoryTmp = tmpSiteDir;
-        }
-
-        return this.siteDirectoryTmp;
-    }
-
-    /**
      * @return the default tmpGeneratedSiteDirectory when report will be created.
      * @since 1.1
      */
@@ -562,7 +553,7 @@ public class PdfMojo
     {
         if ( this.generatedSiteDirectoryTmp == null )
         {
-            this.generatedSiteDirectoryTmp = new File( workingDirectory, "generated-site.tmp" );
+            this.generatedSiteDirectoryTmp = new File( getWorkingDirectory(), "generated-site.tmp" );
         }
 
         return this.generatedSiteDirectoryTmp;
@@ -578,7 +569,7 @@ public class PdfMojo
      * @throws IOException if any
      * @since 1.1
      */
-    private void prepareTempSiteDirectory( final File tmpSiteDir )
+    protected void prepareTempSiteDirectory( final File tmpSiteDir )
         throws IOException
     {
         // safety
@@ -696,6 +687,8 @@ public class PdfMojo
 
             appendGeneratedReports( doc, locale );
 
+            saveTOC( doc.getToc(), locale );
+
             return doc;
         }
 
@@ -707,6 +700,8 @@ public class PdfMojo
         model.getToc().setName( i18n.getString( "pdf-plugin", getDefaultLocale(), "toc.title" ) );
 
         appendGeneratedReports( model, locale );
+
+        saveTOC( model.getToc(), locale );
 
         debugLogGeneratedModel( model );
 
@@ -902,7 +897,7 @@ public class PdfMojo
                                                    project.getName(), locale );
             context.addSiteDirectory( new File( siteDirectory, locale.getLanguage() ) );
 
-            siteRenderer.copyResources( context, workingDirectory );
+            siteRenderer.copyResources( context, getWorkingDirectory() );
         }
         catch ( IOException e )
         {
@@ -976,7 +971,7 @@ public class PdfMojo
     private void generateMavenReports( Locale locale )
         throws MojoExecutionException, IOException
     {
-        if ( !includeReports )
+        if ( !isIncludeReports() )
         {
             getLog().info( "Skipped report generation." );
             return;
@@ -1086,6 +1081,9 @@ public class PdfMojo
             getLog().info( "Generating \"" + localReportName + "\" report." );
         }
 
+        // The report will eventually generate output by itself, so we set its output directory anyway.
+        report.setReportOutputDirectory( outDir );
+
         StringWriter sw = new StringWriter();
 
         PdfXdocSink pdfXdocSink = null;
@@ -1190,10 +1188,10 @@ public class PdfMojo
     /**
      * Append generated reports to the toc only if <code>generateReports</code> is enabled, for instance:
      * <pre>
-     * &lt;item name="Project Reports" ref="/project-info"&gt;
-     * &nbsp;&nbsp;&lt;item name="Project License" ref="/license" /&gt;
-     * &nbsp;&nbsp;&lt;item name="Project Team" ref="/team-list" /&gt;
-     * &nbsp;&nbsp;&lt;item name="Continuous Integration" ref="/integration" /&gt;
+     * &lt;item name="Project Reports" ref="project-info"&gt;
+     * &nbsp;&nbsp;&lt;item name="Project License" ref="license" /&gt;
+     * &nbsp;&nbsp;&lt;item name="Project Team" ref="team-list" /&gt;
+     * &nbsp;&nbsp;&lt;item name="Continuous Integration" ref="integration" /&gt;
      * &nbsp;&nbsp;...
      * &lt;/item&gt;
      * </pre>
@@ -1203,9 +1201,9 @@ public class PdfMojo
      * @see #generateMavenReports(Locale)
      * @since 1.1
      */
-    private void appendGeneratedReports( DocumentModel model, Locale locale )
+    protected void appendGeneratedReports( DocumentModel model, Locale locale )
     {
-        if ( !includeReports )
+        if ( !isIncludeReports() )
         {
             return;
         }
@@ -1216,7 +1214,7 @@ public class PdfMojo
 
         final DocumentTOCItem documentTOCItem = new DocumentTOCItem();
         documentTOCItem.setName( i18n.getString( "pdf-plugin", locale, "toc.project-info.item" ) );
-        documentTOCItem.setRef( "/project-info" ); // see #generateMavenReports(Locale)
+        documentTOCItem.setRef( "project-info" ); // see #generateMavenReports(Locale)
 
         List<String> addedRef = new ArrayList<String>( 4 );
 
@@ -1227,7 +1225,7 @@ public class PdfMojo
         {
             final DocumentTOCItem reportItem = new DocumentTOCItem();
             reportItem.setName( report.getName( locale ) );
-            reportItem.setRef( "/" + report.getOutputName() );
+            reportItem.setRef( report.getOutputName() );
 
             items.add( reportItem );
 
@@ -1267,7 +1265,7 @@ public class PdfMojo
                             {
                                 final DocumentTOCItem reportItem = new DocumentTOCItem();
                                 reportItem.setName( title );
-                                reportItem.setRef( "/" + ref );
+                                reportItem.setRef( ref );
 
                                 items.add( reportItem );
                             }
@@ -1285,6 +1283,18 @@ public class PdfMojo
         // append to Toc
         documentTOCItem.setItems( items );
         model.getToc().addItem( documentTOCItem );
+    }
+
+    private void saveTOC( DocumentTOC toc, Locale locale )
+    {
+        try
+        {
+            TocFileHelper.saveTOC( getWorkingDirectory(), toc, locale );
+        }
+        catch ( IOException e )
+        {
+            getLog().error( "Error while writing table of contents", e );
+        }
     }
 
     /**
@@ -1348,7 +1358,7 @@ public class PdfMojo
         {
             reader = ReaderFactory.newXmlReader( generatedReport );
 
-            doxia.parse( reader, generatedReport.getParentFile().getName(), sinkAdapter );
+            doxia.parse( reader, "xdoc", sinkAdapter );
 
             reader.close();
             reader = null;
