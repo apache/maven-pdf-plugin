@@ -35,7 +35,6 @@ import org.codehaus.plexus.util.ReaderFactory;
 
 /**
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  */
 public class ITextMavenProjectStub
     extends MavenProjectStub

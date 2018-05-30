@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-
 /**
  * Simple bean to allow date interpolation in the document descriptor, i.e.
  * <pre>
@@ -33,7 +32,6 @@ import java.util.TimeZone;
  * ${date}  = 2009-05-17
  * </pre>
  * @author ltheussl
- * @version $Id$
  */
 public class DateBean
 {
@@ -93,7 +91,6 @@ public class DateBean
     {
         this.date = date;
     }
-
 
     /**
      * @return the year in format "yyyy".

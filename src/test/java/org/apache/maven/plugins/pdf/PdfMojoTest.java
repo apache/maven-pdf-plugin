@@ -30,7 +30,6 @@ import java.io.Reader;
 
 /**
  * @author ltheussl
- * @version $Id$
  */
 public class PdfMojoTest
     extends AbstractMojoTestCase

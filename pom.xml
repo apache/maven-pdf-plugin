@@ -78,7 +78,7 @@ under the License.
 
   <properties>
     <doxiaVersion>1.9-SNAPSHOT</doxiaVersion>
-    <doxiaSitetoolsVersion>1.7.5</doxiaSitetoolsVersion>
+    <doxiaSitetoolsVersion>1.8.1</doxiaSitetoolsVersion>
     <mavenVersion>2.2.1</mavenVersion>
   </properties>
 
@@ -240,6 +240,13 @@ under the License.
       </exclusions>
     </dependency>
 
+    <!-- JSON -->
+    <dependency>
+      <groupId>org.kopitubruk.util</groupId>
+      <artifactId>JSONUtil</artifactId>
+      <version>1.10.2-java6</version>
+    </dependency>
+
     <!-- test dependencies -->
     <dependency>
       <groupId>junit</groupId>
@@ -291,6 +298,27 @@ under the License.
         </executions>
       </plugin>
 <!-- END SNIPPET: configuration -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-bytecode-version</id>
+            <configuration>
+              <rules>
+                <enforceBytecodeVersion>
+                  <maxJdkVersion>${maven.compiler.target}</maxJdkVersion>
+                  <excludes><!-- DOXIA-554 Markdown parser requires Java 7 (use version 1.7 if you absolutely require Java 6) -->
+                    <exclude>org.apache.maven.doxia:doxia-module-markdown</exclude>
+                    <exclude>org.nibor.autolink:autolink</exclude>
+                  </excludes>
+                </enforceBytecodeVersion>
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
