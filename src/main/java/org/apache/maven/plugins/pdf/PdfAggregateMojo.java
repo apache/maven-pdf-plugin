@@ -49,8 +49,8 @@ import java.util.Map;
  */
 @Mojo( name = "aggregate", aggregator = true, requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true )
 @Execute( goal = "pdf" )
-public class PdfAggregateMojo
-    extends PdfMojo // TODO should extend AbstractPdfMojo, but requires extensive refactoring
+// TODO should extend AbstractPdfMojo, but requires extensive refactoring
+public class PdfAggregateMojo extends PdfMojo
 {
     /**
      * The reactor projects.
