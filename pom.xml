@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+﻿<?xml version='1.0' encoding='UTF-8'?>
 
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
@@ -311,27 +311,6 @@ under the License.
         </executions>
       </plugin>
 <!-- END SNIPPET: configuration -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>enforce-bytecode-version</id>
-            <configuration>
-              <rules>
-                <enforceBytecodeVersion>
-                  <maxJdkVersion>${maven.compiler.target}</maxJdkVersion>
-                  <excludes><!-- DOXIA-554 Markdown parser requires Java 7 (use version 1.7 if you absolutely require Java 6) -->
-                    <exclude>org.apache.maven.doxia:doxia-module-markdown</exclude>
-                    <exclude>org.nibor.autolink:autolink</exclude>
-                  </excludes>
-                </enforceBytecodeVersion>
-              </rules>
-              <fail>true</fail>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
