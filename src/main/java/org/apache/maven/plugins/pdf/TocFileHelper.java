@@ -28,7 +28,6 @@ import java.util.Map;
 
 import org.apache.maven.doxia.document.DocumentTOC;
 import org.apache.maven.doxia.document.DocumentTOCItem;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.WriterFactory;
 import org.kopitubruk.util.json.IndentPadding;
@@ -55,32 +54,18 @@ class TocFileHelper
         jsonConfig.addReflectClass( DocumentTOC.class );
         jsonConfig.addReflectClass( DocumentTOCItem.class );
 
-        Writer writer = null;
-        try
+        try ( Writer writer = WriterFactory.newWriter( getTocFile( workingDirectory ), "UTF-8" ) )
         {
-            writer = WriterFactory.newWriter( getTocFile( workingDirectory ), "UTF-8" );
             JSONUtil.toJSON( toc, jsonConfig, writer );
-            writer.close();
-            writer = null;
-        }
-        finally
-        {
-            IOUtil.close( writer );
         }
     }
 
     static Map<String, Object> loadToc( File workingDirectory )
         throws IOException
     {
-        Reader reader = null;
-        try
+        try ( Reader reader = ReaderFactory.newReader( getTocFile( workingDirectory ), "UTF-8" ) )
         {
-            reader = ReaderFactory.newReader( getTocFile( workingDirectory ), "UTF-8" );
             return (Map) JSONParser.parseJSON( reader );
-        }
-        finally
-        {
-            IOUtil.close( reader );
         }
     }
 

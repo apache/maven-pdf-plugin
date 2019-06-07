@@ -92,6 +92,7 @@ under the License.
     <doxiaVersion>1.9-SNAPSHOT</doxiaVersion>
     <doxiaSitetoolsVersion>1.8.1</doxiaSitetoolsVersion>
     <mavenVersion>2.2.1</mavenVersion>
+    <javaVersion>7</javaVersion>
   </properties>
 
   <dependencyManagement>

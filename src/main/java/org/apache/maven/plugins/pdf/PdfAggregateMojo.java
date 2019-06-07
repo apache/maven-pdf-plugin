@@ -86,7 +86,6 @@ public class PdfAggregateMojo extends PdfMojo
     }
 
     protected void prepareTempSiteDirectory( final File tmpSiteDir )
-        throws IOException
     {
         tmpSiteDir.mkdirs();
     }
@@ -202,7 +201,7 @@ public class PdfAggregateMojo extends PdfMojo
         catch ( IOException e )
         {
             getLog().error( "Error while reading table of contents of module " + project.getArtifactId(), e );
-            return Collections.<String, Object>emptyMap();
+            return Collections.emptyMap();
         }
     }
 
@@ -224,7 +223,7 @@ public class PdfAggregateMojo extends PdfMojo
 
     private String getStagedId( MavenProject p )
     {
-        Deque<String> projectPath = new ArrayDeque<String>();
+        Deque<String> projectPath = new ArrayDeque<>();
         projectPath.addFirst( p.getArtifactId() );
         while ( p.getParent() != null )
         {

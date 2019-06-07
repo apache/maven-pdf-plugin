@@ -812,15 +812,9 @@ public class PdfMojo
 
             if ( descriptorFile.exists() )
             {
-                XmlStreamReader reader = null;
-                try
+                try ( XmlStreamReader reader = new XmlStreamReader( descriptorFile ) )
                 {
-                    reader = new XmlStreamReader( descriptorFile );
-
                     String siteDescriptorContent = IOUtil.toString( reader );
-
-                    reader.close();
-                    reader = null;
 
                     siteDescriptorContent =
                         siteTool.getInterpolatedSiteDescriptorContent( new HashMap<String, String>( 2 ), project,
@@ -839,10 +833,6 @@ public class PdfMojo
                 catch ( SiteToolException e )
                 {
                     throw new MojoExecutionException( "Error when interpoling site descriptor", e );
-                }
-                finally
-                {
-                    IOUtil.close( reader );
                 }
             }
 
@@ -938,23 +928,15 @@ public class PdfMojo
             final File doc = FileUtils.createTempFile( "pdf", ".xml", outputDir );
             final DocumentXpp3Writer xpp3 = new DocumentXpp3Writer();
 
-            Writer w = null;
-            try
+            try ( Writer writer = WriterFactory.newXmlWriter( doc ) )
             {
-                w = WriterFactory.newXmlWriter( doc );
-                xpp3.write( w, docModel );
-                w.close();
-                w = null;
+                xpp3.write( writer, docModel );
                 getLog().debug( "Generated a default document model: " + doc.getAbsolutePath() );
             }
             catch ( IOException e )
             {
                 getLog().error( "Failed to write document model: " + e.getMessage() );
                 getLog().debug( e );
-            }
-            finally
-            {
-                IOUtil.close( w );
             }
         }
     }
@@ -1174,7 +1156,7 @@ public class PdfMojo
     {
         if ( this.generatedMavenReports == null )
         {
-            this.generatedMavenReports = new HashMap<Locale, List<MavenReport>>( 2 );
+            this.generatedMavenReports = new HashMap<>( 2 );
         }
 
         if ( this.generatedMavenReports.get( locale ) == null )
@@ -1216,9 +1198,9 @@ public class PdfMojo
         documentTOCItem.setName( i18n.getString( "pdf-plugin", locale, "toc.project-info.item" ) );
         documentTOCItem.setRef( "project-info" ); // see #generateMavenReports(Locale)
 
-        List<String> addedRef = new ArrayList<String>( 4 );
+        List<String> addedRef = new ArrayList<>( 4 );
 
-        List<DocumentTOCItem> items = new ArrayList<DocumentTOCItem>( 4 );
+        List<DocumentTOCItem> items = new ArrayList<>( 4 );
 
         // append generated report defined as MavenReport
         for ( final MavenReport report : getGeneratedMavenReports( locale ) )
@@ -1311,15 +1293,9 @@ public class PdfMojo
         final IndexEntry entry = new IndexEntry( "index" );
         final IndexingSink titleSink = new IndexingSink( entry );
 
-        Reader reader = null;
-        try
+        try ( Reader reader = ReaderFactory.newXmlReader( f ) )
         {
-            reader = ReaderFactory.newXmlReader( f );
-
             doxia.parse( reader, f.getParentFile().getName(), titleSink );
-
-            reader.close();
-            reader = null;
         }
         catch ( ParseException e )
         {
@@ -1332,10 +1308,6 @@ public class PdfMojo
             getLog().error( "ParserNotFoundException: " + e.getMessage() );
             getLog().debug( e );
             return null;
-        }
-        finally
-        {
-            IOUtil.close( reader );
         }
 
         return titleSink.getTitle();
@@ -1353,15 +1325,9 @@ public class PdfMojo
     private boolean isValidGeneratedReportXdoc( String fullGoal, File generatedReport, String localReportName )
     {
         SinkAdapter sinkAdapter = new SinkAdapter();
-        Reader reader = null;
-        try
+        try ( Reader reader = ReaderFactory.newXmlReader( generatedReport ) )
         {
-            reader = ReaderFactory.newXmlReader( generatedReport );
-
             doxia.parse( reader, "xdoc", sinkAdapter );
-
-            reader.close();
-            reader = null;
         }
         catch ( ParseException e )
         {
@@ -1402,10 +1368,6 @@ public class PdfMojo
             getLog().debug( e );
 
             return false;
-        }
-        finally
-        {
-            IOUtil.close( reader );
         }
 
         return true;
@@ -1494,23 +1456,14 @@ public class PdfMojo
         // if this ever changes, we will have to revisit this code.
         final Properties properties = new Properties();
 
-        InputStream in = null;
-        try
+        try ( InputStream in = MavenProject.class.getClassLoader().getResourceAsStream(
+                "META-INF/maven/org.apache.maven/maven-core/pom.properties" ) )
         {
-            in = MavenProject.class.getClassLoader().getResourceAsStream( "META-INF/maven/org.apache.maven/maven-core/"
-                                                                              + "pom.properties" );
-
             properties.load( in );
-            in.close();
-            in = null;
         }
         catch ( IOException ioe )
         {
             return "";
-        }
-        finally
-        {
-            IOUtil.close( in );
         }
 
         return properties.getProperty( "version" ).trim();
@@ -1539,19 +1492,10 @@ public class PdfMojo
             return;
         }
 
-        Writer writer = null;
-        try
+        try ( Writer writer = WriterFactory.newXmlWriter( toFile ) )
         {
-            writer = WriterFactory.newXmlWriter( toFile );
             // see PdfSink#table()
             writer.write( StringUtils.replace( content, "<table><table", "<table" ) );
-
-            writer.close();
-            writer = null;
-        }
-        finally
-        {
-            IOUtil.close( writer );
         }
     }
 
