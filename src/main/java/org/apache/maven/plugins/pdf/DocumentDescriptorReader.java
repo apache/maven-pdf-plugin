@@ -114,7 +114,6 @@ public class DocumentDescriptorReader
             }
         }
 
-        Reader reader = null;
         try
         {
             // System properties
@@ -149,31 +148,25 @@ public class DocumentDescriptorReader
             final DateBean bean = new DateBean();
             interpolator.addValueSource( new ObjectBasedValueSource( bean ) );
 
-            reader = ReaderFactory.newXmlReader( docDescriptor );
-
-            final String interpolatedDoc = interpolator.interpolate( IOUtil.toString( reader ) );
-
-            reader.close();
-            reader = null;
-
-            if ( log != null && log.isDebugEnabled() )
+            try ( Reader reader = ReaderFactory.newXmlReader( docDescriptor ) )
             {
-                log.debug( "Interpolated document descriptor ("
-                               + docDescriptor.getAbsolutePath() + ")\n" + interpolatedDoc );
-            }
+                final String interpolatedDoc = interpolator.interpolate( IOUtil.toString( reader ) );
 
-            // No Strict
-            return new DocumentXpp3Reader().read( new StringReader( interpolatedDoc ), false );
+                if ( log != null && log.isDebugEnabled() )
+                {
+                    log.debug( "Interpolated document descriptor ("
+                                   + docDescriptor.getAbsolutePath() + ")\n" + interpolatedDoc );
+                }
+
+                // No Strict
+                return new DocumentXpp3Reader().read( new StringReader( interpolatedDoc ), false );
+            }
         }
         catch ( InterpolationException e )
         {
             final IOException io = new IOException( "Error interpolating document descriptor" );
             io.initCause( e );
             throw io;
-        }
-        finally
-        {
-            IOUtil.close( reader );
         }
     }
 }

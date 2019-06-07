@@ -79,19 +79,12 @@ public class PdfMojoTest
         assertTrue( "FO: Fo file not created!", foFile.exists() );
         assertTrue( "FO: Fo file has no content!", foFile.length() > 0 );
 
-        Reader reader = null;
         String foContent;
-        try
+        try ( Reader reader = ReaderFactory.newXmlReader( foFile ) )
         {
-            reader = ReaderFactory.newXmlReader( foFile );
             foContent = IOUtil.toString( reader );
-            reader.close();
-            reader = null;
         }
-        finally
-        {
-            IOUtil.close( reader );
-        }
+
         // ${pom.name}
         assertTrue( foContent.indexOf( "Test filtering" ) > 0 );
         assertTrue( foContent.indexOf( "1.0-SNAPSHOT" ) > 0 );
@@ -129,7 +122,6 @@ public class PdfMojoTest
     }
 
     protected void executePdfMojo( String pom, String pdfFilename )
-        throws Exception
     {
         // MPDF-78: test desactivated because injection of PlexusContainer fails
         return;

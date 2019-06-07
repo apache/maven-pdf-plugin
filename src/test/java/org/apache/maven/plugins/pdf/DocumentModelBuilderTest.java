@@ -118,19 +118,9 @@ public class DocumentModelBuilderTest
     private DecorationModel getDecorationModelFromFile( File descriptorFile )
         throws IOException, XmlPullParserException
     {
-        Reader reader = null;
-
-        try
+        try ( Reader reader = ReaderFactory.newXmlReader( descriptorFile ) )
         {
-            reader = ReaderFactory.newXmlReader( descriptorFile );
-            final DecorationModel decorationModel = new DecorationXpp3Reader().read( reader );
-            reader.close();
-            reader = null;
-            return decorationModel;
-        }
-        finally
-        {
-            IOUtil.close( reader );
+            return new DecorationXpp3Reader().read( reader );
         }
     }
 

@@ -35,7 +35,6 @@ import org.apache.maven.doxia.site.decoration.Menu;
 import org.apache.maven.doxia.site.decoration.MenuItem;
 import org.apache.maven.model.Developer;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.apache.commons.io.input.XmlStreamReader;
 
@@ -219,7 +218,7 @@ public class DocumentModelBuilder
             return null;
         }
 
-        final List<DocumentAuthor> ret = new ArrayList<DocumentAuthor>( 4 );
+        final List<DocumentAuthor> ret = new ArrayList<>( 4 );
 
         for ( Object o : project.getDevelopers() )
         {
@@ -305,20 +304,15 @@ public class DocumentModelBuilder
         }
 
         String encoding = project.getModel().getModelEncoding();
+
         // Workaround for MNG-4289
-        XmlStreamReader reader = null;
-        try
+        try ( XmlStreamReader reader = new XmlStreamReader( project.getFile() ) )
         {
-            reader = new XmlStreamReader( project.getFile() );
             encoding = reader.getEncoding();
         }
         catch ( IOException e )
         {
             // nop
-        }
-        finally
-        {
-            IOUtil.close( reader );
         }
 
         if ( StringUtils.isEmpty( encoding ) )
