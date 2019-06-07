@@ -42,22 +42,15 @@ public class ITextMavenProjectStub
     public ITextMavenProjectStub()
     {
         MavenXpp3Reader pomReader = new MavenXpp3Reader();
-        Reader reader = null;
-        try
+
+        try ( Reader reader = ReaderFactory.newXmlReader( getFile() ) )
         {
-            reader = ReaderFactory.newXmlReader( getFile() );
             final Model model = pomReader.read( reader );
             setModel( model );
-            reader.close();
-            reader = null;
         }
         catch ( Exception e )
         {
             throw new RuntimeException( e );
-        }
-        finally
-        {
-            IOUtil.close( reader );
         }
     }
 

@@ -41,16 +41,10 @@ public class ModelBuilderMavenProjectStub
      */
     public ModelBuilderMavenProjectStub()
     {
-        XmlStreamReader reader = null;
-        try
+        try ( XmlStreamReader reader = new XmlStreamReader( getFile() ) )
         {
-            reader = new XmlStreamReader( getFile() );
-
             final Model model = new MavenXpp3Reader().read( reader );
             setModel( model );
-
-            reader.close();
-            reader = null;
 
             setGroupId( model.getGroupId() );
             setArtifactId( model.getArtifactId() );
@@ -63,10 +57,6 @@ public class ModelBuilderMavenProjectStub
         catch ( Exception e )
         {
             throw new RuntimeException( e );
-        }
-        finally
-        {
-            IOUtil.close( reader );
         }
     }
 
