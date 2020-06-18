@@ -13,3 +13,6 @@ out/
 /bootstrap
 /dependencies.xml
 .java-version
+pom.xml.versionsBackup
+.checkstyle
+
