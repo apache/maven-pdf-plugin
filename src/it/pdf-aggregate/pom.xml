@@ -81,18 +81,18 @@ under the License.
     <plugins>
       <plugin>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.9</version>
+        <version>3.1.0</version>
         <reportSets>
           <reportSet>
             <reports>
-              <report>cim</report>
+              <report>ci-management</report>
               <report>dependencies</report><!-- generated xdoc is not valid XML: missing <table> -->
               <report>dependency-convergence</report><!-- generated xdoc is not valid XML: missing <table> -->
               <report>dependency-info</report>
               <report>dependency-management</report>
-              <report>issue-tracking</report>
-              <report>license</report>
-              <report>mailing-list</report>
+              <report>issue-management</report>
+              <report>licenses</report>
+              <report>mailing-lists</report>
               <report>plugins</report>
               <report>summary</report>
             </reports>
