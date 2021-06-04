@@ -37,10 +37,8 @@ public class PdfMojoTest
     /**
      * Tests the basic functioning of the pdf generation using the FO implementation.
      *
-     * @throws Exception if any.
      */
     public void testPdfMojo()
-        throws Exception
     {
         executePdfMojo( "pom.xml", "fo/maven-pdf-plugin-doc.pdf" );
     }
@@ -48,10 +46,8 @@ public class PdfMojoTest
     /**
      * Tests the basic functioning of the pdf generation with iText.
      *
-     * @throws Exception if any.
      */
     public void testITextImpl()
-        throws Exception
     {
         executePdfMojo( "iText_pom.xml", "itext/maven-pdf-plugin-doc.pdf" );
      }
@@ -59,10 +55,8 @@ public class PdfMojoTest
     /**
      * Tests the basic functioning of the pdf generation using the FO implementation.
      *
-     * @throws Exception if any.
      */
     public void testPdfMojoNoDocDesriptor()
-        throws Exception
     {
         executePdfMojo( "no_docdescriptor_pom.xml", "no/unnamed.pdf" );
     }

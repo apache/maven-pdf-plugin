@@ -62,7 +62,6 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.Reporting;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -325,7 +324,7 @@ public class PdfMojo
 
     /** {@inheritDoc} */
     public void execute()
-        throws MojoExecutionException, MojoFailureException
+        throws MojoExecutionException
     {
         init();
 
@@ -577,7 +576,7 @@ public class PdfMojo
             String excludes = getDefaultExcludesWithLocales( getAvailableLocales(), getDefaultLocale() );
             List<String> siteFiles =
                 siteDirectory.exists() ? FileUtils.getFileNames( siteDirectory, "**/*", excludes, false )
-                                : new ArrayList<String>();
+                                : new ArrayList<>();
             File siteDirectoryLocale = new File( siteDirectory, locale.getLanguage() );
             if ( !locale.getLanguage().equals( getDefaultLocale().getLanguage() ) && siteDirectoryLocale.exists() )
             {
@@ -770,7 +769,7 @@ public class PdfMojo
                     String siteDescriptorContent = IOUtil.toString( reader );
 
                     siteDescriptorContent =
-                        siteTool.getInterpolatedSiteDescriptorContent( new HashMap<String, String>( 2 ), project,
+                        siteTool.getInterpolatedSiteDescriptorContent( new HashMap<>( 2 ), project,
                                                                        siteDescriptorContent );
 
                     decoration = new DecorationXpp3Reader().read( new StringReader( siteDescriptorContent ) );
@@ -836,7 +835,7 @@ public class PdfMojo
         try
         {
             final SiteRenderingContext context =
-                siteRenderer.createContextForSkin( skinArtifact, new HashMap<String, Object>( 2 ), decorationModel,
+                siteRenderer.createContextForSkin( skinArtifact, new HashMap<>( 2 ), decorationModel,
                                                    project.getName(), locale );
             context.addSiteDirectory( new File( siteDirectory, locale.getLanguage() ) );
 
@@ -1112,10 +1111,7 @@ public class PdfMojo
             this.generatedMavenReports = new HashMap<>( 2 );
         }
 
-        if ( this.generatedMavenReports.get( locale ) == null )
-        {
-            this.generatedMavenReports.put( locale, new ArrayList<MavenReport>( 2 ) );
-        }
+        this.generatedMavenReports.computeIfAbsent( locale, k -> new ArrayList<>( 2 ) );
 
         return this.generatedMavenReports.get( locale );
     }
@@ -1406,16 +1402,16 @@ public class PdfMojo
      */
     private static String getDefaultExcludesWithLocales( List<Locale> locales, Locale defaultLocale )
     {
-        String excludesLocales = FileUtils.getDefaultExcludesAsString();
+        StringBuilder excludesLocales = new StringBuilder( FileUtils.getDefaultExcludesAsString() );
         for ( final Locale locale : locales )
         {
             if ( !locale.getLanguage().equals( defaultLocale.getLanguage() ) )
             {
-                excludesLocales = excludesLocales + ",**/" + locale.getLanguage() + "/*";
+                excludesLocales.append( ",**/" ).append( locale.getLanguage() ).append( "/*" );
             }
         }
 
-        return excludesLocales;
+        return excludesLocales.toString();
     }
 
     /**

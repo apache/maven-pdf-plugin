@@ -211,7 +211,7 @@ public class PdfAggregateMojo extends PdfMojo
         tocItem.setName( (String) item.get( "name" ) );
         tocItem.setRef( stagedId + "/" + item.get( "ref" ) );
 
-        List<Map<String, Object>> items = (ArrayList) item.get( "items" );
+        List<Map<String, Object>> items = (List) item.get( "items" );
 
         for ( Map<String, Object> it : items )
         {

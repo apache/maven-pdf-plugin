@@ -33,7 +33,6 @@ import org.apache.maven.doxia.site.decoration.io.xpp3.DecorationXpp3Reader;
 import org.apache.maven.plugins.pdf.stubs.ModelBuilderMavenProjectStub;
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 

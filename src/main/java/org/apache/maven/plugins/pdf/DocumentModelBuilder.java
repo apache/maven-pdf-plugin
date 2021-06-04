@@ -216,10 +216,8 @@ public class DocumentModelBuilder
 
         final List<DocumentAuthor> ret = new ArrayList<>( 4 );
 
-        for ( Object o : project.getDevelopers() )
+        for ( Developer developer : project.getDevelopers() )
         {
-            final Developer developer = (Developer) o;
-
             final DocumentAuthor author = new DocumentAuthor();
             author.setName( developer.getName() );
             author.setEmail( developer.getEmail() );

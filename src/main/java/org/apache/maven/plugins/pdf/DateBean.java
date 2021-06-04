@@ -45,8 +45,8 @@ public class DateBean
     private static final SimpleDateFormat SECOND = new SimpleDateFormat( "ss", Locale.US );
     private static final SimpleDateFormat MILLI_SECOND = new SimpleDateFormat( "SSS", Locale.US );
     private static final SimpleDateFormat DATE = new SimpleDateFormat( "yyyy-MM-dd", Locale.US );
-    private static final SimpleDateFormat TIME = new SimpleDateFormat( "HH:mm:ss\'Z\'", Locale.US );
-    private static final SimpleDateFormat DATE_TIME = new SimpleDateFormat( "yyyy-MM-dd\'T\'HH:mm:ss\'Z\'", Locale.US );
+    private static final SimpleDateFormat TIME = new SimpleDateFormat( "HH:mm:ss'Z'", Locale.US );
+    private static final SimpleDateFormat DATE_TIME = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US );
 
     static
     {

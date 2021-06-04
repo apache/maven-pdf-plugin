@@ -27,7 +27,6 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Organization;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.codehaus.plexus.util.IOUtil;
 import org.apache.commons.io.input.XmlStreamReader;
 
 /**
@@ -73,7 +72,7 @@ public class ModelBuilderMavenProjectStub
     }
 
     /** {@inheritDoc} */
-    public List getDevelopers()
+    public List<Developer> getDevelopers()
     {
         return getModel().getDevelopers();
     }
@@ -85,7 +84,7 @@ public class ModelBuilderMavenProjectStub
     }
 
     /** {@inheritDoc} */
-    public void setDevelopers( List list )
+    public void setDevelopers( List<Developer> list )
     {
         getModel().setDevelopers( list );
     }
