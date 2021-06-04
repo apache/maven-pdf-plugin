@@ -89,8 +89,8 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <doxiaVersion>1.9</doxiaVersion>
-    <doxiaSitetoolsVersion>1.8.1</doxiaSitetoolsVersion>
+    <doxiaVersion>1.9.1</doxiaVersion>
+    <doxiaSitetoolsVersion>1.9.2</doxiaSitetoolsVersion>
     <mavenVersion>2.2.1</mavenVersion>
     <javaVersion>7</javaVersion>
     <project.build.outputTimestamp>2020-04-07T21:04:00Z</project.build.outputTimestamp>
@@ -227,11 +227,6 @@ under the License.
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>3.0.24</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.5</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
