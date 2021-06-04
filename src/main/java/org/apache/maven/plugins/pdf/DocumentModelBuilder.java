@@ -94,10 +94,6 @@ public class DocumentModelBuilder
         return getDocumentModel( project, decorationModel, date );
     }
 
-    // ----------------------------------------------------------------------
-    // Private methods
-    // ----------------------------------------------------------------------
-
     /**
      * Extract a DocumentModel from a MavenProject.
      *

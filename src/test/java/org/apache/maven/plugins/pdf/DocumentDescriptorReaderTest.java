@@ -65,8 +65,8 @@ public class DocumentDescriptorReaderTest
         assertEquals( "Table of Contents", model.getToc().getName() );
         assertEquals( 5, model.getToc().getItems().size() );
         assertNotNull( model.getMeta() );
-        assertTrue( model.getMeta().getTitle().indexOf(
-                "User guide in en of Test filtering version 1.0-SNAPSHOT" ) == 0 );
+        assertEquals( 0, model.getMeta().getTitle().indexOf(
+                "User guide in en of Test filtering version 1.0-SNAPSHOT" ) );
         assertEquals( "vsiveton@apache.org ltheussl@apache.org", model.getMeta().getAuthor() );
     }
 

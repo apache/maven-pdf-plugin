@@ -25,12 +25,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.DefaultArtifactRepository;
+import org.apache.maven.artifact.repository.MavenArtifactRepository;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.ReaderFactory;
 
 /**
@@ -61,11 +60,11 @@ public class ITextMavenProjectStub
     }
 
     /** {@inheritDoc} */
-    public List getRemoteArtifactRepositories()
+    public List<ArtifactRepository> getRemoteArtifactRepositories()
     {
         ArtifactRepository repository =
-            new DefaultArtifactRepository( "central", "http://repo1.maven.org/maven2",
-                                           new DefaultRepositoryLayout() );
+            new MavenArtifactRepository( "central", "https://repo.maven.apache.org/maven2",
+                        new DefaultRepositoryLayout(), null, null );
 
         return Collections.singletonList( repository );
     }

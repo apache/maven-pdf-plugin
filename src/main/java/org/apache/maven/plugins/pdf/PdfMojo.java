@@ -21,7 +21,6 @@ package org.apache.maven.plugins.pdf;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -31,15 +30,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 
 import org.apache.commons.io.input.XmlStreamReader;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.versioning.ArtifactVersion;
-import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
-import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
-import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.doxia.Doxia;
 import org.apache.maven.doxia.docrenderer.AbstractDocumentRenderer;
 import org.apache.maven.doxia.docrenderer.DocumentRenderer;
@@ -56,9 +50,7 @@ import org.apache.maven.doxia.index.IndexingSink;
 import org.apache.maven.doxia.module.xdoc.XdocSink;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
-import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkAdapter;
-import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.site.decoration.io.xpp3.DecorationXpp3Reader;
 import org.apache.maven.doxia.siterenderer.Renderer;
@@ -71,14 +63,11 @@ import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.Reporting;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.PluginManager;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProjectBuilder;
-import org.apache.maven.reporting.AbstractMavenReportRenderer;
 import org.apache.maven.reporting.MavenReport;
 import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
@@ -114,10 +103,6 @@ public class PdfMojo
      * The vm line separator
      */
     private static final String EOL = System.getProperty( "line.separator" );
-
-    // ----------------------------------------------------------------------
-    // Mojo components
-    // ----------------------------------------------------------------------
 
     /**
      * FO Document Renderer.
@@ -157,32 +142,12 @@ public class PdfMojo
     private SiteTool siteTool;
 
     /**
-     * The Plugin manager instance used to resolve Plugin descriptors.
-     *
-     * @since 1.1
-     */
-    @Component( role = PluginManager.class )
-    private PluginManager pluginManager;
-
-    /**
      * Doxia.
      *
      * @since 1.1
      */
     @Component
     private Doxia doxia;
-
-    /**
-     * Project builder.
-     *
-     * @since 1.1
-     */
-    @Component
-    private MavenProjectBuilder mavenProjectBuilder;
-
-    // ----------------------------------------------------------------------
-    // Mojo Parameters
-    // ----------------------------------------------------------------------
 
     /**
      * The Maven Project Object.
@@ -318,10 +283,6 @@ public class PdfMojo
     @Parameter( defaultValue = "${project.reporting}", readonly = true )
     private Reporting reporting;
 
-    // ----------------------------------------------------------------------
-    // Instance fields
-    // ----------------------------------------------------------------------
-
     /**
      * The current document Renderer.
      * @see #implementation
@@ -361,10 +322,6 @@ public class PdfMojo
      * @since 1.3
      */
     private PlexusContainer container;
-
-    // ----------------------------------------------------------------------
-    // Public methods
-    // ----------------------------------------------------------------------
 
     /** {@inheritDoc} */
     public void execute()
@@ -414,10 +371,6 @@ public class PdfMojo
     {
         return includeReports;
     }
-
-    // ----------------------------------------------------------------------
-    // Private methods
-    // ----------------------------------------------------------------------
 
     /**
      * Init and validate parameters
@@ -1331,26 +1284,18 @@ public class PdfMojo
         }
         catch ( ParseException e )
         {
-            StringBuilder sb = new StringBuilder( 1024 );
-
-            sb.append( EOL );
-            sb.append( "Error when parsing the generated report xdoc file: " );
-            sb.append( generatedReport.getAbsolutePath() );
-            sb.append( EOL );
-            sb.append( e.getMessage() );
-            sb.append( EOL );
-
-            sb.append( "You could:" ).append( EOL );
-            sb.append( "  * exclude all reports using -DincludeReports=false" ).append( EOL );
-            sb.append( "  * remove the " );
-            sb.append( fullGoal );
-            sb.append( " from the <reporting/> part. To not affect the site generation, " );
-            sb.append( "you could create a PDF profile." );
-
-            sb.append( EOL ).append( "Ignoring the \"" ).append( localReportName )
-                    .append( "\" report in the PDF." ).append( EOL );
-
-            getLog().error( sb.toString() );
+            String sb = EOL
+                    + "Error when parsing the generated report xdoc file: "
+                    + generatedReport.getAbsolutePath() + EOL
+                    + e.getMessage() + EOL
+                    + "You could:" + EOL
+                    + "  * exclude all reports using -DincludeReports=false" + EOL
+                    + "  * remove the "
+                    + fullGoal
+                    + " from the <reporting/> part. To not affect the site generation, "
+                    + "you could create a PDF profile." + EOL
+                    + "Ignoring the \"" + localReportName + "\" report in the PDF." + EOL;
+            getLog().error( sb );
             getLog().debug( e );
 
             return false;
@@ -1376,11 +1321,6 @@ public class PdfMojo
     protected List<MavenReportExecution> getReports()
         throws MojoExecutionException
     {
-        if ( !isMaven3OrMore() )
-        {
-            getLog().error( "Report generation is not supported with Maven <= 2.x" );
-        }
-
         MavenReportExecutorRequest mavenReportExecutorRequest = new MavenReportExecutorRequest();
         mavenReportExecutorRequest.setLocalRepository( localRepository );
         mavenReportExecutorRequest.setMavenSession( session );
@@ -1428,50 +1368,8 @@ public class PdfMojo
             mpir.setArtifactId( "maven-project-info-reports-plugin" );
             reportingPlugins.add( mpir );
         }
-        return reportingPlugins.toArray( new ReportPlugin[reportingPlugins.size()] );
+        return reportingPlugins.toArray( new ReportPlugin[0] );
     }
-
-    /**
-     * Check the current Maven version to see if it's Maven 3.0 or newer.
-     */
-    protected static boolean isMaven3OrMore()
-    {
-        try
-        {
-            ArtifactVersion mavenVersion = new DefaultArtifactVersion( getMavenVersion() );
-            return VersionRange.createFromVersionSpec( "[3.0,)" ).containsVersion( mavenVersion );
-        }
-        catch ( InvalidVersionSpecificationException e )
-        {
-            return false;
-        }
-//        return new ComparableVersion( getMavenVersion() ).compareTo( new ComparableVersion( "3.0" ) ) >= 0;
-    }
-
-    protected static String getMavenVersion()
-    {
-        // This relies on the fact that MavenProject is the in core classloader
-        // and that the core classloader is for the maven-core artifact
-        // and that should have a pom.properties file
-        // if this ever changes, we will have to revisit this code.
-        final Properties properties = new Properties();
-
-        try ( InputStream in = MavenProject.class.getClassLoader().getResourceAsStream(
-                "META-INF/maven/org.apache.maven/maven-core/pom.properties" ) )
-        {
-            properties.load( in );
-        }
-        catch ( IOException ioe )
-        {
-            return "";
-        }
-
-        return properties.getProperty( "version" ).trim();
-    }
-
-    // ----------------------------------------------------------------------
-    // static methods
-    // ----------------------------------------------------------------------
 
     /**
      * Write the given content to the given file.
@@ -1520,10 +1418,6 @@ public class PdfMojo
         return excludesLocales;
     }
 
-    // ----------------------------------------------------------------------
-    // Inner class
-    // ----------------------------------------------------------------------
-
     /**
      * A sink to render a Maven report as a generated xdoc file, with some known workarounds.
      *
@@ -1556,103 +1450,4 @@ public class PdfMojo
         }
     }
 
-    /**
-     * Renderer Maven report similar to org.apache.maven.plugins.site.CategorySummaryDocumentRenderer
-     *
-     * @since 1.1
-     */
-    private static class ProjectInfoRenderer
-        extends AbstractMavenReportRenderer
-    {
-        private final List<MavenReport> generatedReports;
-
-        private final I18N i18n;
-
-        private final Locale locale;
-
-        ProjectInfoRenderer( Sink sink, List<MavenReport> generatedReports, I18N i18n, Locale locale )
-        {
-            super( sink );
-
-            this.generatedReports = generatedReports;
-            this.i18n = i18n;
-            this.locale = locale;
-        }
-
-        /** {@inheritDoc} */
-        public String getTitle()
-        {
-            return i18n.getString( "pdf-plugin", locale, "report.project-info.title" );
-        }
-
-        /** {@inheritDoc} */
-        public void renderBody()
-        {
-            sink.section1();
-            sink.sectionTitle1();
-            sink.text( i18n.getString( "pdf-plugin", locale, "report.project-info.title" ) );
-            sink.sectionTitle1_();
-
-            sink.paragraph();
-            sink.text( i18n.getString( "pdf-plugin", locale, "report.project-info.description1" ) + " " );
-            sink.link( "http://maven.apache.org" );
-            sink.text( "Maven" );
-            sink.link_();
-            sink.text( " " + i18n.getString( "pdf-plugin", locale, "report.project-info.description2" ) );
-            sink.paragraph_();
-
-            sink.section2();
-            sink.sectionTitle2();
-            sink.text( i18n.getString( "pdf-plugin", locale, "report.project-info.sectionTitle" ) );
-            sink.sectionTitle2_();
-
-            sink.table();
-
-            sink.tableRows( new int[] { Sink.JUSTIFY_LEFT, Sink.JUSTIFY_LEFT }, false );
-
-            String name = i18n.getString( "pdf-plugin", locale, "report.project-info.column.document" );
-            String description = i18n.getString( "pdf-plugin", locale, "report.project-info.column.description" );
-
-            sink.tableRow();
-
-            sink.tableHeaderCell( SinkEventAttributeSet.CENTER );
-
-            sink.text( name );
-
-            sink.tableHeaderCell_();
-
-            sink.tableHeaderCell( SinkEventAttributeSet.CENTER );
-
-            sink.text( description );
-
-            sink.tableHeaderCell_();
-
-            sink.tableRow_();
-
-            if ( generatedReports != null )
-            {
-                for ( final MavenReport report : generatedReports )
-                {
-                    sink.tableRow();
-                    sink.tableCell();
-                    sink.link( report.getOutputName() + ".html" );
-                    sink.text( report.getName( locale ) );
-                    sink.link_();
-                    sink.tableCell_();
-                    sink.tableCell();
-                    sink.text( report.getDescription( locale ) );
-                    sink.tableCell_();
-                    sink.tableRow_();
-                }
-            }
-
-            sink.tableRows_();
-
-            sink.table_();
-
-            sink.section2_();
-
-            sink.section1_();
-        }
-    }
 }
