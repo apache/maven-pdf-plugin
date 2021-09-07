@@ -262,7 +262,7 @@ under the License.
     <dependency>
       <groupId>org.kopitubruk.util</groupId>
       <artifactId>JSONUtil</artifactId>
-      <version>1.10.2-java6</version>
+      <version>1.10.4-java6</version>
     </dependency>
 
     <!-- test dependencies -->
