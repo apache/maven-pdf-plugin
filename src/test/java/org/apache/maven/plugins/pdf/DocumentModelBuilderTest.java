@@ -65,7 +65,7 @@ public class DocumentModelBuilderTest
     {
         DocumentModel model = new DocumentModelBuilder( new ModelBuilderMavenProjectStub() ).getDocumentModel();
 
-        assertEquals( "ISO-8859-1", model.getModelEncoding() );
+        assertEquals( "UTF-8", model.getModelEncoding() );
         assertEquals( "Test ArtifactId", model.getOutputName() );
 
         DocumentCover cover = model.getCover();
