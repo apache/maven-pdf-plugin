@@ -93,18 +93,9 @@ under the License.
     <doxiaSitetoolsVersion>1.10</doxiaSitetoolsVersion>
     <mavenVersion>3.1.1</mavenVersion>
     <javaVersion>8</javaVersion>
+    <mavenPluginToolsVersion>3.6.1</mavenPluginToolsVersion>
     <project.build.outputTimestamp>2020-04-07T21:04:00Z</project.build.outputTimestamp>
   </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-logging-api</artifactId>
-        <version>${doxiaVersion}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -301,6 +292,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version>
         <executions>
           <execution>
             <goals>
@@ -362,17 +354,6 @@ under the License.
                 <locale>es_ES</locale>
                 <locale>gl_ES</locale>
               </locales>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>cobertura-maven-plugin</artifactId>
-            <configuration>
-              <instrumentation>
-                <excludes>
-                  <exclude>**/HelpMojo.class</exclude>
-                </excludes>
-              </instrumentation>
             </configuration>
           </plugin>
         </plugins>
