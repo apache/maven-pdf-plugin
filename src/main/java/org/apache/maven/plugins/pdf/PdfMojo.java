@@ -247,7 +247,7 @@ public class PdfMojo
 
     /**
      * Generate a TOC (Table Of Content) for all items defined in the &lt;toc/&gt; element from the document descriptor.
-     * <br/>
+     * <br>
      * Possible values are: 'none', 'start' and 'end'.
      *
      * @since 1.1
@@ -513,7 +513,7 @@ public class PdfMojo
 
     /**
      * Copy all site and generated-site files in the tmpSiteDirectory.
-     * <br/>
+     * <br>
      * <b>Note</b>: ignore copying of <code>generated-site</code> files if they already exist in the
      * <code>site</code> dir.
      *
@@ -1369,7 +1369,7 @@ public class PdfMojo
 
     /**
      * Write the given content to the given file.
-     * <br/>
+     * <br>
      * <b>Note</b>: try also to fix the content due to some issues in
      * {@link org.apache.maven.reporting.AbstractMavenReport}.
      *
