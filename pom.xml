@@ -285,6 +285,13 @@ under the License.
           <artifactId>maven-pdf-plugin</artifactId>
           <version>1.4</version>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <configuration> <!--  remove after MPOM-269 -->
+            <tagletArtifacts combine.self="override"/>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
 
