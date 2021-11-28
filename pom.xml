@@ -30,7 +30,7 @@ under the License.
   </parent>
 
   <artifactId>maven-pdf-plugin</artifactId>
-  <version>1.5.1-SNAPSHOT</version>
+  <version>1.5.1</version>
   <packaging>maven-plugin</packaging>
 
   <name>Apache Maven PDF Plugin</name>
@@ -71,7 +71,7 @@ under the License.
     <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-pdf-plugin.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-pdf-plugin.git</developerConnection>
     <url>https://github.com/apache/maven-pdf-plugin/tree/${project.scm.tag}</url>
-    <tag>HEAD</tag>
+    <tag>maven-pdf-plugin-1.5.1</tag>
   </scm>
   <issueManagement>
     <system>JIRA</system>
@@ -94,7 +94,7 @@ under the License.
     <mavenVersion>3.1.1</mavenVersion>
     <javaVersion>8</javaVersion>
     <mavenPluginToolsVersion>3.6.1</mavenPluginToolsVersion>
-    <project.build.outputTimestamp>2021-11-28T20:13:24Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2021-11-28T20:42:57Z</project.build.outputTimestamp>
   </properties>
 
   <dependencies>
@@ -289,7 +289,7 @@ under the License.
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
           <configuration> <!--  remove after MPOM-269 -->
-            <tagletArtifacts combine.self="override"/>
+            <tagletArtifacts combine.self="override" />
           </configuration>
         </plugin>
       </plugins>
