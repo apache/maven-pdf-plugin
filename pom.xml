@@ -93,7 +93,7 @@ under the License.
     <doxiaSitetoolsVersion>1.11.1</doxiaSitetoolsVersion>
     <mavenVersion>3.2.5</mavenVersion>
     <javaVersion>8</javaVersion>
-    <mavenPluginToolsVersion>3.6.1</mavenPluginToolsVersion>
+    <mavenPluginToolsVersion>3.6.4</mavenPluginToolsVersion>
     <project.build.outputTimestamp>2021-11-28T20:43:24Z</project.build.outputTimestamp>
   </properties>
 
