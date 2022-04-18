@@ -1421,7 +1421,6 @@ public class PdfMojo
      */
     private static class PdfXdocSink
         extends XdocSink
-        implements org.codehaus.doxia.sink.Sink
     {
         protected PdfXdocSink( Writer writer )
         {
