@@ -91,7 +91,7 @@ under the License.
   <properties>
     <doxiaVersion>1.11.1</doxiaVersion>
     <doxiaSitetoolsVersion>1.11.1</doxiaSitetoolsVersion>
-    <mavenVersion>3.2.5</mavenVersion>
+    <mavenVersion>3.8.6</mavenVersion>
     <javaVersion>8</javaVersion>
     <mavenPluginToolsVersion>3.6.4</mavenPluginToolsVersion>
     <projectInfoReportsPlugin>3.2.2</projectInfoReportsPlugin>
