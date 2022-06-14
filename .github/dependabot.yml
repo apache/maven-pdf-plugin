@@ -21,6 +21,8 @@ updates:
   schedule:
     interval: daily
   ignore:
+    # Ignore Maven Core updates
+    - dependency-name: "org.apache.maven:*"
     # Ignore Maven 3.2.1+
     - dependency-name: org.apache.maven.plugin-testing:maven-plugin-testing-tools
       versions:
