@@ -94,7 +94,7 @@ under the License.
     <mavenVersion>3.2.5</mavenVersion>
     <javaVersion>8</javaVersion>
     <mavenPluginToolsVersion>3.6.4</mavenPluginToolsVersion>
-    <projectInfoReportsPlugin>3.2.2</projectInfoReportsPlugin>
+    <projectInfoReportsPlugin>3.4.1</projectInfoReportsPlugin>
     <cleanPlugin>3.2.0</cleanPlugin>
     <project.build.outputTimestamp>2022-04-18T12:42:42Z</project.build.outputTimestamp>
   </properties>
@@ -103,7 +103,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
       <artifactId>maven-reporting-api</artifactId>
-      <version>3.1.0</version>
+      <version>3.1.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
@@ -302,7 +302,7 @@ under the License.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-pdf-plugin</artifactId>
-          <version>1.4</version>
+          <version>1.6.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>

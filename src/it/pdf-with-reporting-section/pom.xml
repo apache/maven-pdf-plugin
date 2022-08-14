@@ -76,7 +76,7 @@ under the License.
       </plugin>
     </plugins>
   </build>
-  
+
   <reporting>
     <plugins>
       <plugin>
@@ -101,6 +101,6 @@ under the License.
         </reportSets>
       </plugin>
     </plugins>
-  </reporting>  
-  
+  </reporting>
+
 </project>
