@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.plugins.pdf.stubs;
 
 /*
@@ -22,82 +40,69 @@ package org.apache.maven.plugins.pdf.stubs;
 import java.io.File;
 import java.util.List;
 
+import org.apache.commons.io.input.XmlStreamReader;
 import org.apache.maven.model.Developer;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Organization;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.apache.commons.io.input.XmlStreamReader;
 
 /**
  * @author ltheussl
  */
-public class ModelBuilderMavenProjectStub
-    extends MavenProjectStub
-{
+public class ModelBuilderMavenProjectStub extends MavenProjectStub {
     /**
      * Stub to test the DocumentModelBuilder.
      */
-    public ModelBuilderMavenProjectStub()
-    {
-        try ( XmlStreamReader reader = new XmlStreamReader( getFile() ) )
-        {
-            final Model model = new MavenXpp3Reader().read( reader );
-            setModel( model );
+    public ModelBuilderMavenProjectStub() {
+        try (XmlStreamReader reader = new XmlStreamReader(getFile())) {
+            final Model model = new MavenXpp3Reader().read(reader);
+            setModel(model);
 
-            setGroupId( model.getGroupId() );
-            setArtifactId( model.getArtifactId() );
-            setVersion( model.getVersion() );
-            setName( model.getName() );
-            setDescription( model.getDescription() );
-            setDevelopers( model.getDevelopers() );
-            setOrganization( model.getOrganization() );
-        }
-        catch ( Exception e )
-        {
-            throw new RuntimeException( e );
+            setGroupId(model.getGroupId());
+            setArtifactId(model.getArtifactId());
+            setVersion(model.getVersion());
+            setName(model.getName());
+            setDescription(model.getDescription());
+            setDevelopers(model.getDevelopers());
+            setOrganization(model.getOrganization());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
     /** {@inheritDoc} */
-    public File getBasedir()
-    {
-        return new File( super.getBasedir(), "target/test-classes/unit/pdf/" );
+    public File getBasedir() {
+        return new File(super.getBasedir(), "target/test-classes/unit/pdf/");
     }
 
     /** {@inheritDoc} */
-    public void addDeveloper( Developer developer )
-    {
-        getModel().addDeveloper( developer );
+    public void addDeveloper(Developer developer) {
+        getModel().addDeveloper(developer);
     }
 
     /** {@inheritDoc} */
-    public List<Developer> getDevelopers()
-    {
+    public List<Developer> getDevelopers() {
         return getModel().getDevelopers();
     }
 
     /** {@inheritDoc} */
-    public Organization getOrganization()
-    {
+    public Organization getOrganization() {
         return getModel().getOrganization();
     }
 
     /** {@inheritDoc} */
-    public void setDevelopers( List<Developer> list )
-    {
-        getModel().setDevelopers( list );
+    public void setDevelopers(List<Developer> list) {
+        getModel().setDevelopers(list);
     }
 
     /** {@inheritDoc} */
-    public void setOrganization( Organization organization )
-    {
-        getModel().setOrganization( organization );
+    public void setOrganization(Organization organization) {
+        getModel().setOrganization(organization);
     }
 
     /** {@inheritDoc} */
-    public File getFile()
-    {
-        return new File( getBasedir(), "pom_model_builder.xml" );
+    public File getFile() {
+        return new File(getBasedir(), "pom_model_builder.xml");
     }
 }
