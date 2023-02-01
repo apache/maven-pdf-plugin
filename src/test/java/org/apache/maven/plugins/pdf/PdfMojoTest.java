@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.plugins.pdf;
 
 /*
@@ -19,104 +37,91 @@ package org.apache.maven.plugins.pdf;
  * under the License.
  */
 
+import java.io.File;
+import java.io.Reader;
+
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.cli.CommandLineUtils;
 
-import java.io.File;
-import java.io.Reader;
-
 /**
  * @author ltheussl
  */
-public class PdfMojoTest
-    extends AbstractMojoTestCase
-{
+public class PdfMojoTest extends AbstractMojoTestCase {
     /**
      * Tests the basic functioning of the pdf generation using the FO implementation.
      *
      */
-    public void testPdfMojo()
-    {
-        executePdfMojo( "pom.xml", "fo/maven-pdf-plugin-doc.pdf" );
+    public void testPdfMojo() {
+        executePdfMojo("pom.xml", "fo/maven-pdf-plugin-doc.pdf");
     }
 
     /**
      * Tests the basic functioning of the pdf generation with iText.
      *
      */
-    public void testITextImpl()
-    {
-        executePdfMojo( "iText_pom.xml", "itext/maven-pdf-plugin-doc.pdf" );
-     }
+    public void testITextImpl() {
+        executePdfMojo("iText_pom.xml", "itext/maven-pdf-plugin-doc.pdf");
+    }
 
     /**
      * Tests the basic functioning of the pdf generation using the FO implementation.
      *
      */
-    public void testPdfMojoNoDocDesriptor()
-    {
-        executePdfMojo( "no_docdescriptor_pom.xml", "no/unnamed.pdf" );
+    public void testPdfMojoNoDocDesriptor() {
+        executePdfMojo("no_docdescriptor_pom.xml", "no/unnamed.pdf");
     }
 
     /**
      * @throws Exception if any.
      */
     public void _testPdfFilterMojo() // MPDF-78: test desactivated because injection of PlexusContainer fails
-        throws Exception
-    {
-        executePdfMojo( "pom_filtering.xml", "filtering/maven-pdf-plugin-doc-1.0-SNAPSHOT.pdf" );
+            throws Exception {
+        executePdfMojo("pom_filtering.xml", "filtering/maven-pdf-plugin-doc-1.0-SNAPSHOT.pdf");
 
-        File foFile = new File( getBasedir(), "/target/test-output/pdf/filtering/maven-pdf-plugin-doc-1.0-SNAPSHOT.fo" );
-        assertTrue( "FO: Fo file not created!", foFile.exists() );
-        assertTrue( "FO: Fo file has no content!", foFile.length() > 0 );
+        File foFile = new File(getBasedir(), "/target/test-output/pdf/filtering/maven-pdf-plugin-doc-1.0-SNAPSHOT.fo");
+        assertTrue("FO: Fo file not created!", foFile.exists());
+        assertTrue("FO: Fo file has no content!", foFile.length() > 0);
 
         String foContent;
-        try ( Reader reader = ReaderFactory.newXmlReader( foFile ) )
-        {
-            foContent = IOUtil.toString( reader );
+        try (Reader reader = ReaderFactory.newXmlReader(foFile)) {
+            foContent = IOUtil.toString(reader);
         }
 
         // ${pom.name}
-        assertTrue( foContent.indexOf( "Test filtering" ) > 0 );
-        assertTrue( foContent.indexOf( "1.0-SNAPSHOT" ) > 0 );
+        assertTrue(foContent.indexOf("Test filtering") > 0);
+        assertTrue(foContent.indexOf("1.0-SNAPSHOT") > 0);
         // env ${M2_HOME}
-        String m2Home = CommandLineUtils.getSystemEnvVars().getProperty( "M2_HOME" );
-        if ( StringUtils.isNotEmpty( m2Home ) )
-        {
-            assertTrue( foContent.indexOf( m2Home ) > 0 );
+        String m2Home = CommandLineUtils.getSystemEnvVars().getProperty("M2_HOME");
+        if (StringUtils.isNotEmpty(m2Home)) {
+            assertTrue(foContent.indexOf(m2Home) > 0);
         }
         // ${project.developers[0].email}
-        assertTrue( foContent.indexOf( "vsiveton@apache.org ltheussl@apache.org" ) > 0 );
+        assertTrue(foContent.indexOf("vsiveton@apache.org ltheussl@apache.org") > 0);
         // ${date}
         // TODO: this might fail on NewYear's eve! :)
-        assertTrue( foContent.indexOf( new DateBean().getDate() ) > 0 );
+        assertTrue(foContent.indexOf(new DateBean().getDate()) > 0);
     }
 
-    protected PdfMojo lookupPdfMojo( String pom )
-        throws Exception
-    {
-        File testPom = new File( getBasedir(), "target/test-classes/unit/pdf/" + pom );
-        assertTrue( "testPom does not exist!", testPom.exists() );
-        PdfMojo mojo = (PdfMojo) lookupMojo( "pdf", testPom );
-        assertNotNull( "pdf mojo not found!", mojo );
+    protected PdfMojo lookupPdfMojo(String pom) throws Exception {
+        File testPom = new File(getBasedir(), "target/test-classes/unit/pdf/" + pom);
+        assertTrue("testPom does not exist!", testPom.exists());
+        PdfMojo mojo = (PdfMojo) lookupMojo("pdf", testPom);
+        assertNotNull("pdf mojo not found!", mojo);
         return mojo;
     }
 
-    protected File prepareOutputPdf( String filename )
-    {
-        File pdfFile = new File( getBasedir(), "target/test-output/pdf/" + filename );
-        if ( pdfFile.exists() )
-        {
+    protected File prepareOutputPdf(String filename) {
+        File pdfFile = new File(getBasedir(), "target/test-output/pdf/" + filename);
+        if (pdfFile.exists()) {
             pdfFile.delete();
         }
         return pdfFile;
     }
 
-    protected void executePdfMojo( String pom, String pdfFilename )
-    {
+    protected void executePdfMojo(String pom, String pdfFilename) {
         // MPDF-78: test desactivated because injection of PlexusContainer fails
         return;
         /*
