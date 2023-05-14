@@ -43,7 +43,6 @@ import java.io.Reader;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.ReaderFactory;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.cli.CommandLineUtils;
 
 /**
@@ -95,7 +94,7 @@ public class PdfMojoTest extends AbstractMojoTestCase {
         assertTrue(foContent.indexOf("1.0-SNAPSHOT") > 0);
         // env ${M2_HOME}
         String m2Home = CommandLineUtils.getSystemEnvVars().getProperty("M2_HOME");
-        if (StringUtils.isNotEmpty(m2Home)) {
+        if (m2Home != null && !m2Home.isEmpty()) {
             assertTrue(foContent.indexOf(m2Home) > 0);
         }
         // ${project.developers[0].email}

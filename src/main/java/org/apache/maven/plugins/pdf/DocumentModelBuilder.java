@@ -98,7 +98,7 @@ public class DocumentModelBuilder {
      * @return a DocumentModel. Always non-null.
      */
     private static DocumentModel getDocumentModel(MavenProject project, DecorationModel decorationModel, Date date) {
-        final Date now = (date == null ? new Date() : date);
+        final Date now = date == null ? new Date() : date;
 
         final DocumentModel docModel = new DocumentModel();
 
@@ -278,7 +278,7 @@ public class DocumentModelBuilder {
             // nop
         }
 
-        if (StringUtils.isEmpty(encoding)) {
+        if (encoding == null || encoding.isEmpty()) {
             return "UTF-8";
         }
 
