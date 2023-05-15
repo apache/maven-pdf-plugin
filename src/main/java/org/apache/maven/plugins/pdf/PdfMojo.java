@@ -1197,7 +1197,7 @@ public class PdfMojo extends AbstractPdfMojo implements Contextualizable {
      * @since 1.1
      */
     private static void writeGeneratedReport(String content, File toFile) throws IOException {
-        if (StringUtils.isEmpty(content)) {
+        if (content == null || content.isEmpty()) {
             return;
         }
 
