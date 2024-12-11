@@ -926,11 +926,6 @@ public class PdfMojo extends AbstractPdfMojo implements Contextualizable {
 
     /**
      * see org.apache.maven.plugins.site.render.ReportDocumentRenderer#renderDocument(...)
-     *
-     * @param reportExec
-     * @param locale
-     * @param sink
-     * @throws MavenReportException
      */
     private void renderReportToSink(MavenReportExecution reportExec, Locale locale, PdfXdocSink sink)
             throws MavenReportException {
@@ -941,19 +936,6 @@ public class PdfMojo extends AbstractPdfMojo implements Contextualizable {
             }
 
             MavenReport report = reportExec.getMavenReport();
-
-            /*if ( report instanceof MavenMultiPageReport )
-            {
-                // extended multi-page API
-                ( (MavenMultiPageReport) report ).generate( mainSink, multiPageSinkFactory, locale );
-            }
-            else if ( generateMultiPage( locale, multiPageSinkFactory, mainSink ) )
-            {
-                // extended multi-page API for Maven 2.2, only accessible by reflection API
-            }
-            else
-            {*/
-            // old single-page-only API
             report.generate(sink, locale);
             // }
         } finally {
