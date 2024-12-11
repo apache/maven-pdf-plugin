@@ -18,6 +18,9 @@
  */
 package org.apache.maven.plugins.pdf;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -29,26 +32,30 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.maven.doxia.Doxia;
+import org.apache.maven.doxia.docrenderer.pdf.PdfRenderer;
 import org.apache.maven.doxia.document.DocumentModel;
 import org.apache.maven.doxia.document.DocumentTOC;
 import org.apache.maven.doxia.document.DocumentTOCItem;
+import org.apache.maven.doxia.siterenderer.Renderer;
+import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.model.Reporting;
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
- * Forks {@code pdf} goal then aggregates PDF content from all modules in the reactor.
+ * Forks {@code pdf} goal, then aggregates PDF content from all modules in the reactor.
  *
  * @author anthony-beurive
  * @since 1.5
  */
 @Mojo(name = "aggregate", aggregator = true, requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true)
 @Execute(goal = "pdf")
-// TODO should extend AbstractPdfMojo, but requires extensive refactoring
 public class PdfAggregateMojo extends PdfMojo {
     /**
      * The reactor projects.
@@ -67,6 +74,17 @@ public class PdfAggregateMojo extends PdfMojo {
      */
     @Parameter(defaultValue = "${project.build.directory}/pdf-aggregate", required = true)
     private File aggregatedWorkingDirectory;
+
+    @Inject
+    public PdfAggregateMojo(
+            @Named("fo") PdfRenderer foRenderer,
+            I18N i18n,
+            @Named("itext") PdfRenderer itextRenderer,
+            Renderer siteRenderer,
+            SiteTool siteTool,
+            Doxia doxia) {
+        super(foRenderer, i18n, itextRenderer, siteRenderer, siteTool, doxia);
+    }
 
     protected File getOutputDirectory() {
         return aggregatedOutputDirectory;

@@ -18,6 +18,9 @@
  */
 package org.apache.maven.plugins.pdf;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -61,7 +64,6 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.Reporting;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
@@ -99,51 +101,12 @@ public class PdfMojo extends AbstractPdfMojo implements Contextualizable {
      * The vm line separator
      */
     private static final String EOL = System.getProperty("line.separator");
-
-    /**
-     * FO Document Renderer.
-     */
-    @Component(hint = "fo")
-    private PdfRenderer foRenderer;
-
-    /**
-     * Internationalization.
-     */
-    @Component
-    private I18N i18n;
-
-    /**
-     * IText Document Renderer.
-     */
-    @Component(hint = "itext")
-    private PdfRenderer itextRenderer;
-
     /**
      * A comma separated list of locales supported by Maven.
      * The first valid token will be the default Locale for this instance of the Java Virtual Machine.
      */
     @Parameter(property = "locales")
     private String locales;
-
-    /**
-     * Site renderer.
-     */
-    @Component
-    private Renderer siteRenderer;
-
-    /**
-     * SiteTool.
-     */
-    @Component
-    private SiteTool siteTool;
-
-    /**
-     * Doxia.
-     *
-     * @since 1.1
-     */
-    @Component
-    private Doxia doxia;
 
     /**
      * The Maven Project Object.
@@ -233,7 +196,7 @@ public class PdfMojo extends AbstractPdfMojo implements Contextualizable {
     private String pluginVersion;
 
     /**
-     * If <code>true</false>, generate all Maven reports defined in <code>${project.reporting}</code> and append
+     * If <code>true</code>, generate all Maven reports defined in <code>${project.reporting}</code> and append
      * them as a new entry in the TOC (Table Of Contents).
      * <b>Note</b>: Including the report generation could fail the PDF generation or increase the build time.
      *
@@ -318,6 +281,54 @@ public class PdfMojo extends AbstractPdfMojo implements Contextualizable {
      * @since 1.3
      */
     private PlexusContainer container;
+
+    /**
+     * FO Document Renderer.
+     */
+    private final PdfRenderer foRenderer;
+
+    /**
+     * Internationalization.
+     */
+    private final I18N i18n;
+
+    /**
+     * IText Document Renderer.
+     */
+    private final PdfRenderer itextRenderer;
+
+    /**
+     * Site renderer.
+     */
+    private final Renderer siteRenderer;
+
+    /**
+     * SiteTool.
+     */
+    private final SiteTool siteTool;
+
+    /**
+     * Doxia.
+     *
+     * @since 1.1
+     */
+    private final Doxia doxia;
+
+    @Inject
+    public PdfMojo(
+            @Named("fo") PdfRenderer foRenderer,
+            I18N i18n,
+            @Named("itext") PdfRenderer itextRenderer,
+            Renderer siteRenderer,
+            SiteTool siteTool,
+            Doxia doxia) {
+        this.foRenderer = foRenderer;
+        this.i18n = i18n;
+        this.itextRenderer = itextRenderer;
+        this.siteRenderer = siteRenderer;
+        this.siteTool = siteTool;
+        this.doxia = doxia;
+    }
 
     /** {@inheritDoc} */
     public void execute() throws MojoExecutionException {
