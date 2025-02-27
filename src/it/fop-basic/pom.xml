@@ -55,4 +55,8 @@ under the License.
     </plugins>
   </build>
 
+  <reporting>
+    <excludeDefaults>true</excludeDefaults>
+  </reporting>
+
 </project>
