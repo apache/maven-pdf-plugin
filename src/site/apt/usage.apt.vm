@@ -28,6 +28,9 @@
 
 Using The PDF Plugin
 
+   <<<Note:>>> This plugin is retired. It is no longer maintained.
+
+
   The Maven PDF Plugin allows you generate a PDF document of your documentation.
 
 * From The Command-line
@@ -149,7 +152,7 @@ Using The PDF Plugin
   located in <<<src/site/resources/>>>.
 
   The format of this file has to be exactly the same as the original
-  {{{https://github.com/apache/maven-doxia/blob/master/doxia-modules/doxia-module-fo/src/main/resources/fo-styles.xslt}default configuration file}}.
+  {{{https://github.com/apache/maven-doxia/blob/doxia-1.x/doxia-modules/doxia-module-fo/src/main/resources/fo-styles.xslt}default configuration file}}.
   However, you only need to specify the properties that you want to override,
   <e.g.> to change the font size of pre-formatted text, you could use:
 

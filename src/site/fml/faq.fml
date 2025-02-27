@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
@@ -24,6 +24,8 @@ under the License.
   xsi:schemaLocation="http://maven.apache.org/FML/1.0.1 http://maven.apache.org/xsd/fml-1.0.1.xsd"
   title="Frequently Asked Questions">
 
+  <b>Note</b> This plugin is retired. It is no longer maintained.
+
   <part id="General">
     <title>General</title>
 
@@ -31,8 +33,7 @@ under the License.
       <question>Is it possible to create a book?</question>
       <answer>
         <p>
-          The <a href="http://svn.apache.org/repos/asf/maven/doxia/doxia/trunk/doxia-book/">Doxia Book code</a>
-          currently only supports the iText module for generating a pdf book.
+          You can generating pdf books using <a href="https://maven.apache.org/doxia/book/index.html">Doxia Book</a>.
         </p>
       </answer>
     </faq>
@@ -42,8 +43,8 @@ under the License.
       <answer>
         <p>
           You can use the same graphics formats as are supported by the chosen implementation, eg see
-          <a href="http://xmlgraphics.apache.org/fop/0.94/graphics.html">Apache FOP Graphics Formats</a>
-          and <a href="http://itextdocs.lowagie.com/tutorial/objects/images/index.php">iText Images</a>.
+          <a href="https://xmlgraphics.apache.org/fop/0.95/graphics.html">Apache FOP Graphics Formats</a>
+          and iText Images.
           You should probably take care of image resolution, see bellow.
         </p>
       </answer>
@@ -59,7 +60,7 @@ under the License.
       <answer>
         <p>
           This is most likely a resolution problem, for instance your image was saved with a 72 dpi resolution.
-          Try to use an image with a higher resolution, like 96 dpi. You could resize your image whith this
+          Try to use an image with a higher resolution, like 96 dpi. You could resize your image width this
           program: <a href="http://www.gimp.org/">gimp</a>.
           This is the only solution if you include the image from an apt source file
           (since in apt there is no possibility to specify the size of an image), if you are using

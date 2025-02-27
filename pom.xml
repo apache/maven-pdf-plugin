@@ -31,7 +31,7 @@ under the License.
   <version>1.6.2-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
-  <name>Apache Maven PDF Plugin</name>
+  <name>(RETIRED) Apache Maven PDF Plugin</name>
   <description>Generates a PDF document from the project site.</description>
 
   <contributors>
