@@ -30,6 +30,7 @@ ${project.name}
 
   <<<Note:>>> This plugin is retired. It is no longer maintained.
 
+
   This plug-in allows you to generate a PDF version of your
   project's documentation.
 

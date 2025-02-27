@@ -30,7 +30,6 @@ under the License.
         <p>Otherwise, simply use the ready-made binary artifacts from <strong>central repository</strong>.</p>
         <p><strong>${project.name}</strong> is distributed under the <a href="https://www.apache.org/licenses/">Apache License, version 2.0</a>.</p>
 
-        <a name="mirror"/>
         <subsection name="Files">
             <p><strong>This plugin is retired. It is no longer maintained.</strong></p>
             <p>Historical releases can be found on our <a href="https://archive.apache.org/dist/maven/plugins/">archive site</a>.</p>

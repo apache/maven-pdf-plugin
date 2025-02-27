@@ -29,6 +29,8 @@
 Using The PDF Plugin
 
    <<<Note:>>> This plugin is retired. It is no longer maintained.
+
+
   The Maven PDF Plugin allows you generate a PDF document of your documentation.
 
 * From The Command-line
