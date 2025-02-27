@@ -28,6 +28,7 @@
 
 Filtering Document Descriptor
 
+  <<<Note:>>> This plugin is retired. It is no longer maintained.
   The document descriptor (aka src/site/pdf.xml) could be filtered by System properties, Maven project properties and
   some date properties.
 
