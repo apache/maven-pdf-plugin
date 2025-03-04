@@ -28,7 +28,7 @@ under the License.
   </parent>
 
   <artifactId>maven-pdf-plugin</artifactId>
-  <version>1.6.2-SNAPSHOT</version>
+  <version>1.6.2</version>
   <packaging>maven-plugin</packaging>
 
   <name>(RETIRED) Apache Maven PDF Plugin</name>
@@ -68,7 +68,7 @@ under the License.
   <scm>
     <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-pdf-plugin.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-pdf-plugin.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>maven-pdf-plugin-1.6.2</tag>
     <url>https://github.com/apache/maven-pdf-plugin/tree/${project.scm.tag}</url>
   </scm>
   <issueManagement>
@@ -94,7 +94,7 @@ under the License.
     <mavenPluginToolsVersion>3.6.4</mavenPluginToolsVersion>
     <projectInfoReportsPlugin>3.4.1</projectInfoReportsPlugin>
     <cleanPlugin>3.2.0</cleanPlugin>
-    <project.build.outputTimestamp>2022-08-16T20:20:21Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2025-03-04T17:36:45Z</project.build.outputTimestamp>
   </properties>
 
   <dependencies>
